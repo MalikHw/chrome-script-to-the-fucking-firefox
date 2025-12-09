@@ -1,0 +1,36 @@
+name: Build Chrome→Firefox JS Converter
+
+on:
+  workflow_dispatch:
+    inputs:
+      raw_js_url:
+        description: 'Raw URL of the script.js to convert'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y g++
+
+    - name: Download script.js
+      run: |
+        curl -L "${{ github.event.inputs.raw_js_url }}" -o input.js
+
+    - name: Build converter
+      run: g++ -std=c++17 main.cpp -o converter
+
+    - name: Convert script
+      run: ./converter input.js output.js
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: converted-js
+        path: output.js
