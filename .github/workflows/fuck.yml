@@ -1,4 +1,4 @@
-name: Build Chrome→Firefox JS Converter
+name: fuck
 
 on:
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
       run: ./converter input.js output.js
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: converted-js
         path: output.js
